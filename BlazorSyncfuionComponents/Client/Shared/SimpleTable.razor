@@ -1,0 +1,125 @@
+﻿@using Syncfusion.Blazor.Grids
+@*@using System.Dynamic*@
+
+
+<h3>Crud Table</h3>
+
+
+<SfTab CssClass="tab-magentrack">
+    <TabItems>
+        <TabItem>
+            <ChildContent>
+                <TabHeader Text="Antecedentes"></TabHeader>
+            </ChildContent>
+            <ContentTemplate>
+                <SfToolbar CssClass="toolbar-grid">
+                    <ToolbarItems>
+                        <ToolbarItem Type="ItemType.Input" Align="Syncfusion.Blazor.Navigations.ItemAlign.Right">
+                            <Template>
+                                <ToolbarItem Type="ItemType.Button" OnClick="OnAgregarAntecedentes" CssClass="toolbar-btn toolbar-btn-primary" Text="Agregar"></ToolbarItem>
+                                <ToolbarItem Type="ItemType.Button" OnClick="OnEditarAntecedentes" CssClass="toolbar-btn toolbar-btn-secondary" Text="Editar"></ToolbarItem>
+                            </Template>
+                        </ToolbarItem>
+                    </ToolbarItems>
+                </SfToolbar>
+
+                <div class="col-lg-12 control-section">
+                    <div class="content-wrapper">
+                        <div class="row">
+                            <SfGrid DataSource="@GridData" @ref="@_gridMediciones" AllowResizing="true" AllowFiltering="true" AllowSorting="true" EnableHeaderFocus="true" AllowPaging="true" AllowSelection="true" EnableVirtualMaskRow="true" EnableHover="true">
+                                <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Excel"></GridFilterSettings>
+                                <GridEditSettings AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
+                                <GridColumns>
+                                    <GridColumn Field=@nameof(OrdersDetails.OrderID) HeaderText="Order ID" IsPrimaryKey="true" Visible="false" TextAlign="TextAlign.Right" Width="120"></GridColumn>
+                                    <GridColumn Field=@nameof(OrdersDetails.CustomerID) HeaderText="Customer ID" Width="150"></GridColumn>
+                                    <GridColumn Field=@nameof(OrdersDetails.OrderDate) HeaderText="Order Date" Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="130"></GridColumn>
+                                    <GridColumn Field=@nameof(OrdersDetails.Freight) Format="C2" TextAlign="TextAlign.Right" Width="120"></GridColumn>
+                                    <GridColumn Field=@nameof(OrdersDetails.ShipCountry) HeaderText="Ship Country" Width="150"></GridColumn>
+                                </GridColumns>
+                                <GridEvents OnActionBegin="OnSavedClicked" TValue="OrdersDetails"></GridEvents>
+                                @*<GridSelectionSettings Mode="Syncfusion.Blazor.Grids.SelectionMode.Row" Type="Syncfusion.Blazor.Grids.SelectionType.Single"></GridSelectionSettings>*@
+                                <GridPageSettings PageSize="10"></GridPageSettings>
+                            </SfGrid>
+                        </div>
+                    </div>
+                </div>
+            </ContentTemplate>
+        </TabItem>
+        <TabItem>
+            <ChildContent>
+                <TabHeader Text="Tabla"></TabHeader>
+            </ChildContent>
+            <ContentTemplate>
+                Contenido 2
+            </ContentTemplate>
+        </TabItem>
+    </TabItems>
+</SfTab>
+
+
+
+
+
+
+@code {
+    public List<OrdersDetails> GridData { get; set; }
+
+    private SfGrid<OrdersDetails> _gridMediciones;
+
+    protected override void OnInitialized()
+    {
+        Console.WriteLine("OnInitialized");
+        GridData = new List<OrdersDetails> {
+            new OrdersDetails(){ OrderID = 1, CustomerID = "Customer1", OrderDate = DateTime.Now, Freight = 2.8, ShipCountry = "Colombia" },
+            new OrdersDetails(){ OrderID = 2, CustomerID = "Customer1", OrderDate = DateTime.Now, Freight = 3.8, ShipCountry = "Colombia" },
+            new OrdersDetails(){ OrderID = 3, CustomerID = "Customer1", OrderDate = DateTime.Now, Freight = 4.8, ShipCountry = "Colombia" },
+            new OrdersDetails(){ OrderID = 4, CustomerID = "Customer1", OrderDate = DateTime.Now, Freight = 5.8, ShipCountry = "Colombia" },
+            new OrdersDetails(){ OrderID = 5, CustomerID = "Customer1", OrderDate = DateTime.Now, Freight = 6.8, ShipCountry = "Colombia" },
+            new OrdersDetails(){ OrderID = 6, CustomerID = "Customer1", OrderDate = DateTime.Now, Freight = 7.8, ShipCountry = "Colombia" },
+            new OrdersDetails(){ OrderID = 7, CustomerID = "Customer2", OrderDate = DateTime.Now, Freight = 8.8, ShipCountry = "Colombia" },
+            new OrdersDetails(){ OrderID = 8, CustomerID = "Customer2", OrderDate = DateTime.Now, Freight = 3.8, ShipCountry = "Colombia" },
+            new OrdersDetails(){ OrderID = 9, CustomerID = "Customer2", OrderDate = DateTime.Now, Freight = 3.8, ShipCountry = "Colombia" },
+            new OrdersDetails(){ OrderID = 10, CustomerID = "Customer2", OrderDate = DateTime.Now, Freight = 5.8, ShipCountry = "Colombia" },
+            new OrdersDetails(){ OrderID = 11, CustomerID = "Customer2", OrderDate = DateTime.Now, Freight = 1.8, ShipCountry = "Colombia" },
+            new OrdersDetails(){ OrderID = 12, CustomerID = "Customer2", OrderDate = DateTime.Now, Freight = 1.8, ShipCountry = "Colombia" },
+            new OrdersDetails(){ OrderID = 13, CustomerID = "Customer2", OrderDate = DateTime.Now, Freight = 4.8, ShipCountry = "Colombia" },
+            new OrdersDetails(){ OrderID = 14, CustomerID = "Customer2", OrderDate = DateTime.Now, Freight = 9.8, ShipCountry = "Colombia" },
+            new OrdersDetails(){ OrderID = 15, CustomerID = "Customer2", OrderDate = DateTime.Now, Freight = 9.8, ShipCountry = "Colombia" },
+            new OrdersDetails(){ OrderID = 16, CustomerID = "Customer2", OrderDate = DateTime.Now, Freight = 3.8, ShipCountry = "Colombia" },
+            new OrdersDetails(){ OrderID = 17, CustomerID = "Customer2", OrderDate = DateTime.Now, Freight = 5.8, ShipCountry = "Colombia" }
+        };
+    }
+
+    //Permite abrir el modal en modo Creación
+    private async Task OnAgregarAntecedentes()
+    {
+        Console.WriteLine("OnAgregarAntecedentes");
+        if (_gridMediciones != null)
+            await _gridMediciones.AddRecordAsync();
+    }
+    private async Task OnEditarAntecedentes()
+    {
+        Console.WriteLine("OnEditarAntecedentes");
+        if (_gridMediciones != null)
+            await _gridMediciones.StartEditAsync();
+    }
+
+    //Método que se ejecuta al Presionar Guardar en el modal.async Task
+    public void OnSavedClicked(ActionEventArgs<OrdersDetails> args)
+    {
+        if (args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            if (args.Data is OrdersDetails)
+            {
+                //args.Data.PacienteId = PatientId;
+                if ((args.Data as OrdersDetails).OrderID <= 0)
+                    Console.WriteLine("Manda a Crear en Back: "+args.Data.OrderID);
+                    //args.Data = await _pacienteServices.CreateAntecedentesPacienteAsync(args.Data);
+                else
+                    Console.WriteLine("Manda a editar En back: " + args.Data.OrderID);
+                //await _pacienteServices.UpdateAntecedentesPacienteAsync(args.Data);
+            }
+        }
+    }
+
+}

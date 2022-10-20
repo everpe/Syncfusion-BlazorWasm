@@ -1,0 +1,30 @@
+﻿
+
+<label>Enter your age:</label>
+
+<input @bind-value=@ageValue />
+<br />
+<br />
+
+@if (ageValue < 18 || ageValue > 60)
+{
+    <SfMessage Variant='MessageVariant.Filled'
+           Severity='MessageSeverity.Warning'
+           ContentAlignment='Syncfusion.Blazor.HorizontalAlign.Center'
+           ShowIcon=true
+           ShowCloseIcon=true
+           Visible=@isMessageVisible>
+        <p>Enter a valid age between 18 and 60</p>
+    </SfMessage>
+    <SfButton Content="@(isMessageVisible ? "Quitar" : "Agregar")" @onclick="@dismissClick"></SfButton>
+}
+
+@code {
+    public int ageValue { get; set; }
+    public bool isMessageVisible { get; set; } = true;
+
+    public void dismissClick()
+    {
+        isMessageVisible = !isMessageVisible;
+    }
+}
