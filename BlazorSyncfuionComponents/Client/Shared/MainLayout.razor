@@ -1,17 +1,298 @@
 ﻿@inherits LayoutComponentBase
+@using Syncfusion.Blazor.Lists
+@using Syncfusion.Blazor.Navigations
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
+
+<div id="header" style="height:55px;text-align: center;color:#3F4254;background-color: white;font-size:1.5rem;line-height:55px;">
+    Header
+</div>
+
+@*//Toolbar*@
+@*<SfToolbar CssClass="dockToolbar">
+    <ToolbarEvents Clicked="@Toggle"></ToolbarEvents>
+    <ToolbarItems>
+        <ToolbarItem PrefixIcon="e-tbar-menu-icon tb-icons" TooltipText="Menu"></ToolbarItem>
+        <ToolbarItem>
+            <Template>
+                <div class="e-folder">
+                    <div class="e-folder-name">Blazor Documentation</div>
+                </div>
+            </Template>
+        </ToolbarItem>
+    </ToolbarItems>
+</SfToolbar>*@
+
+
+
+
+
+<SfSidebar @ref="sidebarObj" Width="200px" DockSize="60px" EnableDock=true @bind-IsOpen="SidebarToggle">
+@*    <ChildContent>
+        <div class="dock">
+            <ul>
+                <li class="sidebar-item" id="toggle" @onclick="Toggle">
+                    <span class="e-icons expand"></span>
+                    <span class="e-text" title="menu">Menu</span>
+                </li>
+                <li class="sidebar-item">
+                    <span class="e-icons home"></span>
+                    <span class="e-text" title="home">Inicio</span>
+                </li>
+                <li class="sidebar-item">
+                    <span class="e-icons profile"></span>
+                    <span class="e-text" title="profile">Alertas</span>
+                </li>
+                <li class="sidebar-item">
+                    <span class="e-icons info"></span>
+                    <span class="e-text" title="info">Pacientes</span>
+                </li>
+            </ul>
+        </div>
+    </ChildContent>*@
+    <ChildContent>
+        <div class="main-menu">
+      @*      <div class="table-content">
+
+                <p class="main-menu-header">MENÚ</p>
+            </div>*@
+            <div>
+
+                <SfTreeView @ref="@_sfTreeView" CssClass="main-treeview"  TValue="TreeData">
+                    <TreeViewFieldsSettings Id="NodeId" Text="NodeText" DataSource="Treedata" HasChildren="HasChild" ParentID="Pid"></TreeViewFieldsSettings>
+                        <div class="dock">
+                            <li class="sidebar-item" id="toggle" @onclick="Toggle">
+                                <span class="e-icons expand"></span>
+                                <span class="e-text" title="menu">Menú</span>
+                            </li>
+                        </div>
+                        <TreeViewTemplates TValue="TreeData">
+                            <NodeTemplate>
+                                @{
+                                    var employee = ((context as TreeData));
+                                        //<ul>
+                                                <li class="sidebar-item">
+                                                    <span class="@employee.Clase"></span>
+                                                    <span class="e-text">@employee.NodeText</span>
+                                                </li>
+                                        //</ul>    
+                                 }
+                                </NodeTemplate>
+                            </TreeViewTemplates>
+                    <TreeViewEvents TValue="TreeData" NodeClicked="NodeClickedEventArgs"></TreeViewEvents>
+                </SfTreeView>
+            </div>
+            <div class="footer-content">
+                <p class="main-menu-footer">Powered by Magentrack © @DateTime.Now.Year <br> </p>
+            </div>
+        </div>
+    </ChildContent>
+</SfSidebar>
+    <div id="main-content container-fluid col-md-12" style="margin-top: 5%;">
+        <div class="title default" style="text-align: center">@Body</div>
     </div>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+
+@code {
+    SfSidebar sidebarObj;
+    public bool SidebarToggle = false;
+    private SfTreeView<TreeData> _sfTreeView;
+    public ExpandAction Expand = ExpandAction.Click;
+
+    public void Toggle()
+    {
+        SidebarToggle = !SidebarToggle;
+        StateHasChanged();
+    }
+    private List<TreeData> Treedata = new List<TreeData>()  {
+        //new TreeData { NodeId = "00", NodeText = "Menú", IconCss = "mdi mdi-view-dashboard-outline", Id = 0, Clase = "e-icons expand" },
+        new TreeData { NodeId = "01", NodeText = "Inicio", IconCss = "mdi mdi-view-dashboard-outline", Id = 1, Clase = "e-icons home" },
+        new TreeData { NodeId = "02", NodeText = "Alertas", IconCss = "mdi mdi-account-alert-outline", Id = 2, Clase = "e-icons profile" },
+        new TreeData { NodeId = "03", NodeText = "Pacientes", IconCss = "mdi mdi-clipboard-account-outline", Id = 3, Clase = "e-icons info" }
+    };
+
+    public class TreeData
+    {
+        public int Id { get; set; }
+        public string NodeId { get; set; }
+        public string NodeText { get; set; }
+        public string IconCss { get; set; }
+        public string Clase { get; set; }
+    }
+
+    public void NodeClickedEventArgs(NodeClickEventArgs treeData)
+    {
+        //treeData.NodeData
+        //switch (treeData.NodeData.Text)
+        //{
+        //    case "Inicio":
+        //        _navManager.NavigateTo("/Dashboard");
+        //        break;
+        //    case "Alertas":
+        //        _navManager.NavigateTo("/Alerta");
+        //        break;
+        //    case "Pacientes":
+        //        _navManager.NavigateTo("/Paciente");
+        //        break;
+        //}
+        //SidebarToggle = false;
+    }
+}
+
+
+
+
+<style>
+    /* Content area styles */
+    .title {
+        font-size: 20px;
+    }
+
+    /* Sidebar styles */
+    .e-sidebar .e-icons::before {
+        font-size: 25px;
+    }
+
+    /* dockbar icon Style */
+    .e-sidebar .home::before {
+        content: '\e7d4';
+    }
+
+    .e-sidebar .profile::before {
+        content: '\e88b';
+    }
+
+    .e-sidebar .info::before {
+        content: '\e7b9';
+    }
+
+    .e-sidebar .settings::before {
+        /*content: '\e10b';*/
+        content: '\e705';
+    }
+
+    .e-sidebar .expand::before,
+    .e-sidebar.e-right.e-open .expand::before {
+        content: '\e10f';
+    }
+
+    .e-sidebar.e-open .expand::before,
+    .e-sidebar.e-right .expand::before {
+        content: '\e10e';
+    }
+
+    /* end of dockbar icon Style */
+
+    .e-sidebar.e-dock.e-close span.e-text {
+        display: none;
+    }
+
+    .e-sidebar.e-dock.e-open span.e-text {
+        display: inline-block;
+    }
+
+    .e-sidebar li {
+        list-style-type: none;
+        cursor: pointer;
+    }
+
+    .e-sidebar ul {
+        padding: 0px;
+    }
+
+
+    .e-sidebar span.e-icons {
+        color: #c0c2c5;
+        line-height: 2
+    }
+
+    .e-open .e-icons {
+        margin-right: 16px;
+    }
+
+    .e-open .e-text {
+        overflow: hidden;
+        font-size: 15px;
+    }
+
+    .sidebar-item {
+        text-align: center;
+        border-bottom: 1px #e5e5e58a solid;
+        /*border: solid red;*/
+        align-items: center;
+    }
+    .dock .sidebar-item:hover{
+        background: #255B7770 0% 0% no-repeat padding-box;
+        border: none;
+    }
+
+    .e-sidebar.e-open .sidebar-item {
+        text-align: left;
+        padding-left: 0px;
+        color: white;
+        /*border: solid orange;*/
+        width: 100%;
+        display: flex;
+    }
+
+    .e-sidebar {
+        background: #01324c;
+        overflow: hidden;
+    }
+
+    @@font-face {
+        font-family: 'e-icons';
+        src: url(data:application/x-font-ttf;charset=utf-8;base64,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) format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    .main > div {
+        padding: 0px !important;
+    }
+    /* end of sidebar styles */
+
+    .e-treeview .e-list-text {
+        /*border:solid red !important;*/
+        justify-content:center;
+        align-items: center;
+    }
+    .e-treeview .e-list-text{
+        width: 100%;
+        height: 20px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        border-bottom: solid 1px;
+        color: white;
+        text-align: center;
+        /*border:solid purple;*/
+    }
+
+    .e-treeview .e-ul{
+        padding: 0px;
+    }
+    .e-treeview .e-text-content{
+        padding: 0px;
+    }
+
+
+    /*Ya están en Magentrack*/
+    .e-treeview .e-list-item.e-hover > .e-fullrow {
+        background: #255B7770 0% 0% no-repeat padding-box;
+        border: none;
+    }
+    .e-treeview .e-list-item.e-active > .e-fullrow {
+        background: #255B7770 0% 0% no-repeat padding-box;
+        border: none;
+    }
+    .e-treeview .e-list-item.e-active.e-hover > .e-fullrow {
+        background: #255B7770 0% 0% no-repeat padding-box;
+        border: none;
+    }
+    .e-treeview .e-list-item.e-active > .e-fullrow {
+        background: #255B7770 0% 0% no-repeat padding-box;
+        border: none;
+    }
+
+</style>
