@@ -7,36 +7,11 @@
     Header
 </div>
 
-
-@*    <ChildContent>
-        <div class="dock">
-            <ul>
-                <li class="sidebar-item" id="toggle" @onclick="Toggle">
-                    <span class="e-icons expand"></span>
-                    <span class="e-text" title="menu">Menu</span>
-                </li>
-                <li class="sidebar-item">
-                    <span class="e-icons home"></span>
-                    <span class="e-text" title="home">Inicio</span>
-                </li>
-                <li class="sidebar-item">
-                    <span class="e-icons profile"></span>
-                    <span class="e-text" title="profile">Alertas</span>
-                </li>
-                <li class="sidebar-item">
-                    <span class="e-icons info"></span>
-                    <span class="e-text" title="info">Pacientes</span>
-                </li>
-            </ul>
-        </div>
-    </ChildContent>*@
 <SfSidebar @ref="sidebarObj" Width="200px" DockSize="60px" EnableDock=true @bind-IsOpen="SidebarToggle">
     <ChildContent>
         <div class="main-menu">
-    
             <SfTreeView @ref="@_sfTreeView" CssClass="main-treeview" TValue="TreeData">
                 <TreeViewFieldsSettings Id="NodeId" Text="NodeText" DataSource="Treedata" HasChildren="HasChild" ParentID="Pid"></TreeViewFieldsSettings>
-                @*<div class="dock">*@
                 <li class="sidebar-item" id="toggle" @onclick="Toggle">
                     <span class="e-icons expand"></span>
                     <span class="e-text" title="menu">Menú</span>
@@ -45,16 +20,15 @@
                     <NodeTemplate>
                         @{
                             var menu = ((context as TreeData));
-                                <li class="sidebar-item">
-                                    <span class="@menu.Clase"></span>
-                                    <span class="e-text">@menu.NodeText</span>
-                                </li>
+                            <li class="sidebar-item">
+                                <span class="@menu.Clase"></span>
+                                <span class="e-text">@menu.NodeText</span>
+                            </li>
                         }
                     </NodeTemplate>
                 </TreeViewTemplates>
                 <TreeViewEvents TValue="TreeData" NodeClicked="NodeClickedEventArgs"></TreeViewEvents>
             </SfTreeView>
-        @*</div>*@
             <div class="footer-content">
                 <p class="main-menu-footer">Powered by Magentrack © @DateTime.Now.Year <br> </p>
             </div>
@@ -124,7 +98,7 @@
 
     /* Sidebar styles */
     .e-sidebar .e-icons::before {
-        font-size: 25px;
+        font-size: 20px;
     }
 
     /* dockbar icon Style */
