@@ -7,26 +7,7 @@
     Header
 </div>
 
-@*//Toolbar*@
-@*<SfToolbar CssClass="dockToolbar">
-    <ToolbarEvents Clicked="@Toggle"></ToolbarEvents>
-    <ToolbarItems>
-        <ToolbarItem PrefixIcon="e-tbar-menu-icon tb-icons" TooltipText="Menu"></ToolbarItem>
-        <ToolbarItem>
-            <Template>
-                <div class="e-folder">
-                    <div class="e-folder-name">Blazor Documentation</div>
-                </div>
-            </Template>
-        </ToolbarItem>
-    </ToolbarItems>
-</SfToolbar>*@
 
-
-
-
-
-<SfSidebar @ref="sidebarObj" Width="200px" DockSize="60px" EnableDock=true @bind-IsOpen="SidebarToggle">
 @*    <ChildContent>
         <div class="dock">
             <ul>
@@ -49,51 +30,44 @@
             </ul>
         </div>
     </ChildContent>*@
+<SfSidebar @ref="sidebarObj" Width="200px" DockSize="60px" EnableDock=true @bind-IsOpen="SidebarToggle">
     <ChildContent>
         <div class="main-menu">
-      @*      <div class="table-content">
-
-                <p class="main-menu-header">MENÚ</p>
-            </div>*@
-            <div>
-
-                <SfTreeView @ref="@_sfTreeView" CssClass="main-treeview"  TValue="TreeData">
-                    <TreeViewFieldsSettings Id="NodeId" Text="NodeText" DataSource="Treedata" HasChildren="HasChild" ParentID="Pid"></TreeViewFieldsSettings>
-                        <div class="dock">
-                            <li class="sidebar-item" id="toggle" @onclick="Toggle">
-                                <span class="e-icons expand"></span>
-                                <span class="e-text" title="menu">Menú</span>
-                            </li>
-                        </div>
-                        <TreeViewTemplates TValue="TreeData">
-                            <NodeTemplate>
-                                @{
-                                    var employee = ((context as TreeData));
-                                        //<ul>
-                                                <li class="sidebar-item">
-                                                    <span class="@employee.Clase"></span>
-                                                    <span class="e-text">@employee.NodeText</span>
-                                                </li>
-                                        //</ul>    
-                                 }
-                                </NodeTemplate>
-                            </TreeViewTemplates>
-                    <TreeViewEvents TValue="TreeData" NodeClicked="NodeClickedEventArgs"></TreeViewEvents>
-                </SfTreeView>
-            </div>
+    
+            <SfTreeView @ref="@_sfTreeView" CssClass="main-treeview" TValue="TreeData">
+                <TreeViewFieldsSettings Id="NodeId" Text="NodeText" DataSource="Treedata" HasChildren="HasChild" ParentID="Pid"></TreeViewFieldsSettings>
+                @*<div class="dock">*@
+                <li class="sidebar-item" id="toggle" @onclick="Toggle">
+                    <span class="e-icons expand"></span>
+                    <span class="e-text" title="menu">Menú</span>
+                </li>
+                <TreeViewTemplates TValue="TreeData">
+                    <NodeTemplate>
+                        @{
+                            var menu = ((context as TreeData));
+                                <li class="sidebar-item">
+                                    <span class="@menu.Clase"></span>
+                                    <span class="e-text">@menu.NodeText</span>
+                                </li>
+                        }
+                    </NodeTemplate>
+                </TreeViewTemplates>
+                <TreeViewEvents TValue="TreeData" NodeClicked="NodeClickedEventArgs"></TreeViewEvents>
+            </SfTreeView>
+        @*</div>*@
             <div class="footer-content">
                 <p class="main-menu-footer">Powered by Magentrack © @DateTime.Now.Year <br> </p>
             </div>
         </div>
     </ChildContent>
 </SfSidebar>
-    <div id="main-content container-fluid col-md-12" style="margin-top: 5%;">
+    <div id="main-content container-fluid col-md-12" style="margin-top: 5%;padding:20px">
         <div class="title default" style="text-align: center">@Body</div>
     </div>
 
 
 
-@code {
+    @code {
     SfSidebar sidebarObj;
     public bool SidebarToggle = false;
     private SfTreeView<TreeData> _sfTreeView;
@@ -221,7 +195,8 @@
         /*border: solid red;*/
         align-items: center;
     }
-    .dock .sidebar-item:hover{
+
+    .dock .sidebar-item:hover {
         background: #255B7770 0% 0% no-repeat padding-box;
         border: none;
     }
@@ -254,10 +229,11 @@
 
     .e-treeview .e-list-text {
         /*border:solid red !important;*/
-        justify-content:center;
+        justify-content: center;
         align-items: center;
     }
-    .e-treeview .e-list-text{
+
+    .e-treeview .e-list-text {
         width: 100%;
         height: 20px;
         overflow: hidden;
@@ -269,10 +245,11 @@
         /*border:solid purple;*/
     }
 
-    .e-treeview .e-ul{
+    .e-treeview .e-ul {
         padding: 0px;
     }
-    .e-treeview .e-text-content{
+
+    .e-treeview .e-text-content {
         padding: 0px;
     }
 
@@ -282,14 +259,17 @@
         background: #255B7770 0% 0% no-repeat padding-box;
         border: none;
     }
+
     .e-treeview .e-list-item.e-active > .e-fullrow {
         background: #255B7770 0% 0% no-repeat padding-box;
         border: none;
     }
+
     .e-treeview .e-list-item.e-active.e-hover > .e-fullrow {
         background: #255B7770 0% 0% no-repeat padding-box;
         border: none;
     }
+
     .e-treeview .e-list-item.e-active > .e-fullrow {
         background: #255B7770 0% 0% no-repeat padding-box;
         border: none;
